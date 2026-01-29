@@ -4,6 +4,7 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
+//used as db table for each course
 @Entity(tableName = "courses")
 class Course {
 

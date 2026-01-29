@@ -24,9 +24,11 @@ class CourseRepository(private val courseDao: CourseDao) {
         }
     }
 
+    //calls the search query from course dao
+    //exact match to name, changed it to be similar match using %
     fun findCourse(name: String) {
         coroutineScope.launch(Dispatchers.Main) {
-            searchResults.value = asyncFind(name).await()
+            searchResults.value = asyncFind("%$name%").await()
         }
     }
 

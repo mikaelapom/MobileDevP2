@@ -35,11 +35,6 @@ import androidx.compose.runtime.livedata.observeAsState
 import kotlin.random.Random
 
 import com.maxli.coursegpa.ui.theme.CourseTheme
-
-
-
-
-
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -47,13 +42,13 @@ class MainActivity : ComponentActivity() {
             CourseTheme {
                 // A surface container using the 'background' color from the theme
                 Surface(
-                    modifier = Modifier.fillMaxSize(),
+                    modifier = Modifier.fillMaxSize(), //fill max size is whole screen
                     color = MaterialTheme.colorScheme.background
                 ) {
                     val owner = LocalViewModelStoreOwner.current
 
                     owner?.let {
-                        val viewModel: MainViewModel = viewModel(
+                        val viewModel: MainViewModel = viewModel( //create a viewmodel with mainViewModelFactpry
                             it,
                             "MainViewModel",
                             MainViewModelFactory(
@@ -67,9 +62,6 @@ class MainActivity : ComponentActivity() {
             }
         }
     }
-
-
-
 
     // Adding the button to your layout - Adapt this to your layout configuration
     // For example, if you have a LinearLayout, you can add the button to it
@@ -92,6 +84,7 @@ class MainActivity : ComponentActivity() {
 
 }
 
+//initial screen setup, calls the main screen with the right data
 @Composable
 fun ScreenSetup(viewModel: MainViewModel) {
     val allCourses by viewModel.allCourses.observeAsState(listOf())
@@ -105,6 +98,7 @@ fun ScreenSetup(viewModel: MainViewModel) {
 
 }
 
+//main ui with the buttons, text field, and list of courses
 @Composable
 fun MainScreen(
     allCourses: List<Course>,
@@ -118,7 +112,7 @@ fun MainScreen(
     }
 
     var calculatedGPA by remember {
-        mutableDoubleStateOf(-1.0)
+        mutableDoubleStateOf(-1.0) //default value
     }
 
     var searching by remember { mutableStateOf(false) }
@@ -136,8 +130,9 @@ fun MainScreen(
     }
 
 
+    //use column to create text fields
     Column(
-        horizontalAlignment = CenterHorizontally,
+        horizontalAlignment = CenterHorizontally, //sets alignment to be stacked
         modifier = Modifier
             .fillMaxWidth()
     ) {
@@ -163,13 +158,14 @@ fun MainScreen(
         )
 
 
+        //use row to arrange the buttons
         Row(
             horizontalArrangement = Arrangement.SpaceEvenly,
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(10.dp)
         ) {
-            Button(onClick = {
+            Button(onClick = { //"add" button, if there is something in courseCreditHour field then add the details into the space below
                 if (courseCreditHour.isNotEmpty()) {
                     viewModel.insertCourse(
                         Course(
@@ -184,21 +180,21 @@ fun MainScreen(
                 Text("Add")
             }
 
-            Button(onClick = {
+            Button(onClick = { //for search button, find the course in the viewmodel
                 searching = true
                 viewModel.findCourse(courseName)
             }) {
                 Text("Sch")
             }
 
-            Button(onClick = {
+            Button(onClick = { //for deleting, delete course in the viewmodel
                 searching = false
                 viewModel.deleteCourse(courseName)
             }) {
                 Text("Del")
             }
 
-            Button(onClick = {
+            Button(onClick = { //for clearing the entries, set space to be empty
                 searching = false
                 courseName = ""
                 courseCreditHour = ""
@@ -227,6 +223,8 @@ fun MainScreen(
             Text("GPA: $calculatedGPA")
 
         }
+
+        //creates scrollable lazy loading column
         LazyColumn(
             Modifier
                 .fillMaxWidth()
@@ -258,6 +256,8 @@ private fun calculateGPA2(allCourses: List<Course>): Double {
     return if (totalCreditHours > 0) totalPoints / totalCreditHours else 0.0
 }
 
+
+//sets up the title row table headers
 @Composable
 fun TitleRow(head1: String, head2: String, head3: String, head4: String) {
     Row(
@@ -279,6 +279,7 @@ fun TitleRow(head1: String, head2: String, head3: String, head4: String) {
     }
 }
 
+//adds styling and content for each course entry
 @Composable
 fun CourseRow(id: Int, name: String, creditHour: Int, letterGrade: String) {
     Row(
@@ -295,6 +296,7 @@ fun CourseRow(id: Int, name: String, creditHour: Int, letterGrade: String) {
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
+//text fields
 @Composable
 fun CustomTextField(
     title: String,
@@ -316,6 +318,7 @@ fun CustomTextField(
     )
 }
 
+//creates view model
 class MainViewModelFactory(val application: Application) :
     ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {

@@ -2,6 +2,7 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.devtoolsKsp)
+    alias(libs.plugins.kotlin.compose)
 }
 
 android {
@@ -39,9 +40,6 @@ android {
     }
     sourceSets {
         getByName("main").java.srcDirs(files("build/generated/ksp/main/kotlin"))
-    }
-    composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.8"
     }
     packaging {
         resources {
