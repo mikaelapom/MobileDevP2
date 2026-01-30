@@ -157,17 +157,34 @@ fun MainScreen(
 
     var searching by remember { mutableStateOf(false) }
 
+    var creditHourError by remember { mutableStateOf(false) }
+
+    var letterGradeError by remember { mutableStateOf(false) }
+
     val onCourseTextChange = { text : String ->
         courseName = text
     }
 
-    val onCreditHourTextChange = { text : String ->
-        courseCreditHour = text
+    val onCreditHourTextChange = { text: String ->
+        if (text.all { it.isDigit() }) {
+            courseCreditHour = text
+            creditHourError = false
+        } else {
+            creditHourError = true
+        }
     }
 
-    val onLetterGradeTextChange = { text : String ->
-        letterGrade = text
+    val onLetterGradeTextChange = { text: String ->
+        val upper = text.uppercase()
+
+        if (upper.length <= 1 && upper.all { it in "ABCDF" }) {
+            letterGrade = upper
+            letterGradeError = false
+        } else {
+            letterGradeError = true
+        }
     }
+
 
 
     //use column to create text fields
@@ -181,7 +198,7 @@ fun MainScreen(
             textState = courseName,
             onTextChange = onCourseTextChange,
             keyboardType = KeyboardType.Text,
-            Modifier.border(width = 0.5.dp, Color(0xFF1A2C57))
+//            Modifier.border(width = 0.5.dp, Color(0xFF1A2C57))
         )
 
         CustomTextField(
@@ -189,16 +206,20 @@ fun MainScreen(
             textState = courseCreditHour,
             onTextChange = onCreditHourTextChange,
             keyboardType = KeyboardType.Number,
-            Modifier.border(width = 0.5.dp, Color(0xFF1A2C57))
+            isError = creditHourError,
+            errorMessage = "Numbers only"
         )
+
 
         CustomTextField(
             title = "Letter Grade",
             textState = letterGrade,
             onTextChange = onLetterGradeTextChange,
             keyboardType = KeyboardType.Text,
-            Modifier.border(width = 0.5.dp, Color(0xFF1A2C57))
+            isError = letterGradeError,
+            errorMessage = "Enter A, B, C, D, or F"
         )
+
 
 
         //use row to arrange the buttons
@@ -344,28 +365,43 @@ fun CourseRow(id: Int, name: String, creditHour: Int, letterGrade: String) {
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
-//text fields
 @Composable
 fun CustomTextField(
     title: String,
     textState: String,
     onTextChange: (String) -> Unit,
     keyboardType: KeyboardType,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,   // ✅ ADD THIS
+    isError: Boolean = false,
+    errorMessage: String? = null
 ) {
-    OutlinedTextField(
-        value = textState,
-        onValueChange = { onTextChange(it) },
-        keyboardOptions = KeyboardOptions(
-            keyboardType = keyboardType
-        ),
-        singleLine = true,
-        label = { Text(title)},
-        modifier = Modifier.padding(10.dp),
-        textStyle = TextStyle(fontWeight = FontWeight.Bold,
-            fontSize = 30.sp)
-    )
+    Column {
+        OutlinedTextField(
+            value = textState,
+            onValueChange = onTextChange,
+            keyboardOptions = KeyboardOptions(keyboardType = keyboardType),
+            singleLine = true,
+            label = { Text(title) },
+            isError = isError,
+            modifier = modifier.padding(10.dp),   // ✅ USE IT HERE
+            textStyle = TextStyle(
+                fontWeight = FontWeight.Bold,
+                fontSize = 30.sp
+            )
+        )
+
+        if (isError && errorMessage != null) {
+            Text(
+                text = errorMessage,
+                color = Color.Red,
+                fontSize = 14.sp,
+                modifier = Modifier.padding(start = 16.dp)
+            )
+        }
+    }
 }
+
+
 
 //creates view model
 class MainViewModelFactory(val application: Application) :
