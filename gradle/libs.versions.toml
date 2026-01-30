@@ -1,16 +1,16 @@
 [versions]
-agp = "8.13.2"
+agp = "9.0.0"
 coreKtx = "1.13.1"
 junit = "4.13.2"
 junitVersion = "1.1.5"
 espressoCore = "3.5.1"
 lifecycleRuntimeKtx = "2.7.0"
 activityCompose = "1.8.2"
-kotlin = "1.9.22"
+kotlin = "2.2.10"
 composeBom = "2024.04.01"
 roomRuntime = "2.6.1"
 runtimeLivedata = "1.6.2"
-ksp = "1.9.22-1.0.17"
+ksp = "2.3.2"
 
 
 [libraries]
@@ -39,3 +39,4 @@ androidx-compose-runtime-livedata = { group = "androidx.compose.runtime", name =
 android-application = { id = "com.android.application", version.ref = "agp" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 devtoolsKsp = {id = "com.google.devtools.ksp", version.ref = "ksp"}
+kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }

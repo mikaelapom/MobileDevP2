@@ -35,11 +35,6 @@ import androidx.compose.runtime.livedata.observeAsState
 import kotlin.random.Random
 
 import com.maxli.coursegpa.ui.theme.CourseTheme
-
-
-
-
-
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -47,7 +42,7 @@ class MainActivity : ComponentActivity() {
             CourseTheme {
                 // A surface container using the 'background' color from the theme
                 Surface(
-                    modifier = Modifier.fillMaxSize(),
+                    modifier = Modifier.fillMaxSize(), //fill max size is whole screen
                     color = MaterialTheme.colorScheme.background
                 ) {
                     val owner = LocalViewModelStoreOwner.current
@@ -67,9 +62,6 @@ class MainActivity : ComponentActivity() {
             }
         }
     }
-
-
-
 
     // Adding the button to your layout - Adapt this to your layout configuration
     // For example, if you have a LinearLayout, you can add the button to it
@@ -92,6 +84,7 @@ class MainActivity : ComponentActivity() {
 
 }
 
+//initial screen setup, calls the main screen with the right data
 @Composable
 fun ScreenSetup(viewModel: MainViewModel) {
     val allCourses by viewModel.allCourses.observeAsState(listOf())
@@ -105,6 +98,7 @@ fun ScreenSetup(viewModel: MainViewModel) {
 
 }
 
+//main ui with the buttons, text field, and list of courses
 @Composable
 fun MainScreen(
     allCourses: List<Course>,
@@ -136,6 +130,7 @@ fun MainScreen(
     }
 
 
+    //use column to create text fields
     Column(
         horizontalAlignment = CenterHorizontally,
         modifier = Modifier
@@ -163,6 +158,7 @@ fun MainScreen(
         )
 
 
+        //use row to arrange the buttons
         Row(
             horizontalArrangement = Arrangement.SpaceEvenly,
             modifier = Modifier
@@ -204,6 +200,7 @@ fun MainScreen(
                 searching = false
                 courseName = ""
                 courseCreditHour = ""
+                letterGrade = ""
             }// ,
 //                modifier = Modifier.size(width = 80.dp, height = 50.dp)
 
@@ -295,6 +292,7 @@ fun CourseRow(id: Int, name: String, creditHour: Int, letterGrade: String) {
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
+//text fields
 @Composable
 fun CustomTextField(
     title: String,
@@ -316,6 +314,7 @@ fun CustomTextField(
     )
 }
 
+//creates view model
 class MainViewModelFactory(val application: Application) :
     ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
