@@ -24,11 +24,15 @@ class MainViewModel(application: Application) : ViewModel() {
         repository.insertCourse(course)
     }
 
-    fun findCourse(name: String) {
-        repository.findCourse(name)
-    }
+//    fun findCourse(name: String) {
+//        repository.findCourse(name)
+//    }
 
     fun deleteCourse(name: String) {
         repository.deleteCourse(name)
+    }
+
+    fun smartSearch(courseName: String?, creditHour: String?, letterGrade: String?) {
+        repository.smartSearch(courseName, creditHour, letterGrade)
     }
 }

@@ -248,11 +248,12 @@ fun MainScreen(
 
             Button(onClick = {
                 searching = true
-                viewModel.findCourse(courseName)
-            }, colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF97CDEC),contentColor = Color(0xFF1A2C57))
+                viewModel.smartSearch(courseName, courseCreditHour, letterGrade)
+            }, colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF97CDEC), contentColor = Color(0xFF1A2C57))
             ) {
                 Text("Search")
             }
+
 
             Button(onClick = {
                 searching = false

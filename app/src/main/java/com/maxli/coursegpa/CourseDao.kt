@@ -16,9 +16,13 @@ interface CourseDao {
     //for searching
     //this was originally exact matches only so i changed it to be like name instead
     @Query("SELECT * FROM courses WHERE courseName LIKE :name")
-    fun findCourse(name: String): List<Course>
+    fun findCourseByName(name: String): List<Course>
 
-    //to do: find courses based on grade or credit hour instead of just name
+    @Query("SELECT * FROM courses WHERE creditHour = :creditHour")
+    fun findCourseByCreditHour(creditHour: Int): List<Course>
+
+    @Query("SELECT * FROM courses WHERE letterGrade = :letterGrade")
+    fun findCourseByLetterGrade(letterGrade: String): List<Course>
 
     @Query("DELETE FROM courses WHERE courseName = :name")
     fun deleteCourse(name: String)

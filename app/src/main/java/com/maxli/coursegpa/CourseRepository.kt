@@ -24,16 +24,23 @@ class CourseRepository(private val courseDao: CourseDao) {
         }
     }
 
-    //calls the search query from course dao
-    //exact match to name, changed it to be similar match using %
-    fun findCourse(name: String) {
+    fun smartSearch(courseName: String?, creditHour: String?, letterGrade: String?) {
         coroutineScope.launch(Dispatchers.Main) {
-            searchResults.value = asyncFind("%$name%").await()
+            val results = when {
+                !courseName.isNullOrBlank() -> asyncFindByName("%$courseName%").await()
+                !creditHour.isNullOrBlank() -> asyncFindByCreditHour(creditHour.toInt()).await()
+                !letterGrade.isNullOrBlank() -> asyncFindByLetterGrade(letterGrade.uppercase()).await()
+                else -> emptyList()
+            }
+            searchResults.value = results
         }
     }
 
-    private fun asyncFind(name: String): Deferred<List<Course>?> =
-        coroutineScope.async(Dispatchers.IO) {
-            return@async courseDao.findCourse(name)
-        }
-}
+    private fun asyncFindByName(name: String): Deferred<List<Course>> =
+        coroutineScope.async(Dispatchers.IO) { courseDao.findCourseByName(name) }
+
+    private fun asyncFindByCreditHour(creditHour: Int): Deferred<List<Course>> =
+        coroutineScope.async(Dispatchers.IO) { courseDao.findCourseByCreditHour(creditHour) }
+
+    private fun asyncFindByLetterGrade(letterGrade: String): Deferred<List<Course>> =
+        coroutineScope.async(Dispatchers.IO) { courseDao.findCourseByLetterGrade(letterGrade) } }
