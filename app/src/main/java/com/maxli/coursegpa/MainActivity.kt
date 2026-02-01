@@ -80,8 +80,6 @@ class MainActivity : ComponentActivity() {
 }
 
 //initial screen setup, calls the main screen with the right data
-
-
 @Composable
 fun TopBanner() {
     Column {
@@ -161,8 +159,15 @@ fun MainScreen(
 
     var letterGradeError by remember { mutableStateOf(false) }
 
+    var courseNameError by remember { mutableStateOf(false) }
+
+    var courseNameErrorMessage by remember {
+        mutableStateOf("Please enter a course name")
+    }
+
     val onCourseTextChange = { text : String ->
         courseName = text
+        courseNameError = false
     }
 
     val onCreditHourTextChange = { text: String ->
@@ -198,6 +203,8 @@ fun MainScreen(
             textState = courseName,
             onTextChange = onCourseTextChange,
             keyboardType = KeyboardType.Text,
+            isError = courseNameError,
+            errorMessage = courseNameErrorMessage
 //            Modifier.border(width = 0.5.dp, Color(0xFF1A2C57))
         )
 
@@ -207,7 +214,7 @@ fun MainScreen(
             onTextChange = onCreditHourTextChange,
             keyboardType = KeyboardType.Number,
             isError = creditHourError,
-            errorMessage = "Numbers only"
+            errorMessage = "Please enter a number"
         )
 
 
@@ -231,20 +238,37 @@ fun MainScreen(
         ) {
             Button(
                 onClick = {
-                if (courseCreditHour.isNotEmpty()) {
-                    viewModel.insertCourse(
-                        Course(
-                            courseName,
-                            courseCreditHour.toInt(),
-                            letterGrade
-                        )
-                    )
-                    searching = false
-                }
-            }, colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF97CDEC),contentColor = Color(0xFF1A2C57)) //0xFF97CDEC blue, 0xFFFBE475 yellow
-            ) {
-                Text("Add")
-            }
+                    //field checking
+                    courseNameError = courseName.isBlank()
+                    if (courseNameError) {
+                        courseNameErrorMessage = "Please enter a course name"
+                    }
+                    creditHourError = courseCreditHour.isBlank() || !courseCreditHour.all { it.isDigit() }
+                    letterGradeError = letterGrade.isBlank() || !(letterGrade.length == 1 && letterGrade.all { it in "ABCDF" })
+
+                    //check all possible errors
+                    if (!courseNameError && !creditHourError && !letterGradeError) {
+                        val duplicate = allCourses.any { it.courseName.equals(courseName, ignoreCase = true) }
+                        if (duplicate) {
+                            courseNameError = true
+                            courseNameErrorMessage = "Course already added"
+                        } else {
+                            //if no error then insrt
+                            viewModel.insertCourse(
+                                Course(courseName, courseCreditHour.toInt(), letterGrade)
+                            )
+                            searching = false
+                            courseName = ""
+                            courseCreditHour = ""
+                            letterGrade = ""
+                        }
+                    }
+                },
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = Color(0xFF97CDEC),
+                    contentColor = Color(0xFF1A2C57)
+                )
+            ) { Text("Add") }
 
             Button(onClick = {
                 searching = true
@@ -372,7 +396,7 @@ fun CustomTextField(
     textState: String,
     onTextChange: (String) -> Unit,
     keyboardType: KeyboardType,
-    modifier: Modifier = Modifier,   // ✅ ADD THIS
+    modifier: Modifier = Modifier,
     isError: Boolean = false,
     errorMessage: String? = null
 ) {
@@ -384,7 +408,7 @@ fun CustomTextField(
             singleLine = true,
             label = { Text(title) },
             isError = isError,
-            modifier = modifier.padding(10.dp),   // ✅ USE IT HERE
+            modifier = modifier.padding(10.dp),
             textStyle = TextStyle(
                 fontWeight = FontWeight.Bold,
                 fontSize = 30.sp
