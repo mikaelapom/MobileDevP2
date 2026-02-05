@@ -28,8 +28,8 @@ class MainViewModel(application: Application) : ViewModel() {
 //        repository.findCourse(name)
 //    }
 
-    fun deleteCourse(name: String) {
-        repository.deleteCourse(name)
+    fun deleteCourse(id: Int) {
+        repository.deleteCourse(id)
     }
 
     fun smartSearch(courseName: String?, creditHour: String?, letterGrade: String?) {

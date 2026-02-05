@@ -24,8 +24,8 @@ interface CourseDao {
     @Query("SELECT * FROM courses WHERE letterGrade = :letterGrade")
     fun findCourseByLetterGrade(letterGrade: String): List<Course>
 
-    @Query("DELETE FROM courses WHERE courseName = :name")
-    fun deleteCourse(name: String)
+    @Query("DELETE FROM courses WHERE courseId = :id")
+    fun deleteCourse(id: Int)
 
     @Query("SELECT * FROM courses")
     fun getAllCourses(): LiveData<List<Course>>

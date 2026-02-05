@@ -281,7 +281,14 @@ fun MainScreen(
 
             Button(onClick = {
                 searching = false
-                viewModel.deleteCourse(courseName)
+                val courseToDelete = allCourses.firstOrNull {
+                    it.courseName.equals(courseName, ignoreCase = true)
+                }
+
+// Only delete if a matching course exists
+                courseToDelete?.let {
+                    viewModel.deleteCourse(it.id)
+                }
 
             }, colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF97CDEC),contentColor = Color(0xFF1A2C57))
             ) {

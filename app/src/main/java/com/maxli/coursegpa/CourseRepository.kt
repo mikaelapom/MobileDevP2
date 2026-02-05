@@ -18,9 +18,9 @@ class CourseRepository(private val courseDao: CourseDao) {
         }
     }
 
-    fun deleteCourse(name: String) {
+    fun deleteCourse(id: Int) {
         coroutineScope.launch(Dispatchers.IO) {
-            courseDao.deleteCourse(name)
+            courseDao.deleteCourse(id)
         }
     }
 
