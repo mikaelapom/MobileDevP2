@@ -24,6 +24,7 @@ class TrivialViewModel(
             dao.deleteAllQuestions()
 
 
+            //1
             dao.insertQuestion(
                 TrivialQuestion(
                     "When did Smith College start?",
@@ -35,7 +36,124 @@ class TrivialViewModel(
                 )
             )
 
-            // repeat until 10 total
+            //2
+            dao.insertQuestion(
+                TrivialQuestion(
+                    "When did Smith College start?",
+                    "1890",
+                    "1871",
+                    "1923",
+                    "1950",
+                    "B"
+                )
+            )
+
+            dao.insertQuestion(
+                TrivialQuestion(
+                    "When did Smith College start?",
+                    "1890",
+                    "1871",
+                    "1923",
+                    "1950",
+                    "B"
+                )
+            )
+
+            //3
+            dao.insertQuestion(
+                TrivialQuestion(
+                    "When did Smith College start?",
+                    "1890",
+                    "1871",
+                    "1923",
+                    "1950",
+                    "B"
+                )
+            )
+
+            //4
+            dao.insertQuestion(
+                TrivialQuestion(
+                    "When did Smith College start?",
+                    "1890",
+                    "1871",
+                    "1923",
+                    "1950",
+                    "B"
+                )
+            )
+
+            //5
+            dao.insertQuestion(
+                TrivialQuestion(
+                    "When did Smith College start?",
+                    "1890",
+                    "1871",
+                    "1923",
+                    "1950",
+                    "B"
+                )
+            )
+
+            //6
+            dao.insertQuestion(
+                TrivialQuestion(
+                    "When did Smith College start?",
+                    "1890",
+                    "1871",
+                    "1923",
+                    "1950",
+                    "B"
+                )
+            )
+
+            //7
+            dao.insertQuestion(
+                TrivialQuestion(
+                    "When did Smith College start?",
+                    "1890",
+                    "1871",
+                    "1923",
+                    "1950",
+                    "B"
+                )
+            )
+
+            //8
+            dao.insertQuestion(
+                TrivialQuestion(
+                    "When did Smith College start?",
+                    "1890",
+                    "1871",
+                    "1923",
+                    "1950",
+                    "B"
+                )
+            )
+
+            //9
+            dao.insertQuestion(
+                TrivialQuestion(
+                    "When did Smith College start?",
+                    "1890",
+                    "1871",
+                    "1923",
+                    "1950",
+                    "B"
+                )
+            )
+
+            //10
+            dao.insertQuestion(
+                TrivialQuestion(
+                    "When did Smith College start?",
+                    "1890",
+                    "1871",
+                    "1923",
+                    "1950",
+                    "B"
+                )
+            )
 
             allQuestions = dao.getAllQuestions()
         }
