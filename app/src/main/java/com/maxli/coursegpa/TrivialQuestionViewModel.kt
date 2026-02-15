@@ -23,15 +23,15 @@ class TrivialViewModel(
         viewModelScope.launch {
             dao.deleteAllQuestions()
 
-            // You will insert all 10 questions here
+
             dao.insertQuestion(
                 TrivialQuestion(
-                    "When was XYZ University founded?",
+                    "When did Smith College start?",
                     "1890",
-                    "1901",
+                    "1871",
                     "1923",
                     "1950",
-                    "A"
+                    "B"
                 )
             )
 
