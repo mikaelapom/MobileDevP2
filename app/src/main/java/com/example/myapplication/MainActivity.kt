@@ -9,11 +9,13 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -50,23 +52,23 @@ var QuestionsAnswered: Int = 0
 var QuestionsCorrect: Int = 0
 var QuestionsWrong: Int = 0 //Might not need -Diana
 
-class Question(val question: String, val correctAnswer: String, val wrong1: String, val wrong2: String, val wrong3: String) {
-    fun getAllOptions(): List<String> {
-        return listOf(correctAnswer, wrong1, wrong2, wrong3).shuffled()
-    }
+class Question(val question: String, val correctAnswer: String, val wrong1: String, val wrong2: String, val wrong3: String, var answered: Boolean) {
+
 }
 
 val TestQuestion1 = Question("Test Question",
     "Test Answer",
     "Test Wrong",
     "Test Wrong",
-    "Test Wrong")
+    "Test Wrong",
+    false)
 
 val TestQuestion2 = Question("Test Question2",
     "Test Answer2",
     "Test Wrong2",
     "Test Wrong2",
-    "Test Wrong2")
+    "Test Wrong2",
+    false)
 
 var questionsList = listOf(TestQuestion1, TestQuestion2)
 
@@ -84,10 +86,15 @@ class MainActivity : ComponentActivity() {
                     ) {
                         TopBanner()
                         SecondBanner()
+
                         QuestionBox()
+                        Spacer(modifier = Modifier.height(4.dp))
                         AnswerOne()
+                        Spacer(modifier = Modifier.height(4.dp))
                         AnswerTwo()
+                        Spacer(modifier = Modifier.height(4.dp))
                         AnswerThree()
+                        Spacer(modifier = Modifier.height(4.dp))
                         AnswerFour()
                     }
 
@@ -158,15 +165,17 @@ fun QuestionBox() {
     Box(
         modifier = Modifier
             .fillMaxWidth()
+            .background(Color(0xFF1A2C57))
             .height(80.dp),
         contentAlignment = Alignment.CenterStart
     ) {
         Text(
             text = "Question $questionNumber: ${questionsList[questionNumber - 1].question}",
+            modifier = Modifier.padding(horizontal = 16.dp),
             style = TextStyle(
                 fontFamily = TimesNewRoman,
-                fontSize = 25.sp,
-                color = Color(0xFF1A2C57)
+                fontSize = 30.sp,
+                color = Color(0xFFFBE475)
             )
         )
     }
@@ -192,19 +201,19 @@ fun AnswerOne() {
             modifier = Modifier.size(50.dp)
         ) {
             Text(
-                text = "A",
+                text = "A", //Didnt use times for font bcs ugly - Diana
                 textAlign = TextAlign.Center,
                 style = TextStyle(
-                    fontFamily = TimesNewRoman,
                     fontSize = 25.sp,
                     color = Color(0xFF1A2C57)
                 )
             )
         }
+        Spacer(modifier = Modifier.width(16.dp))
         Text(
             text = "${questionsList[questionNumber - 1].correctAnswer}",
+            fontFamily = TimesNewRoman,
             style = TextStyle(
-                fontFamily = TimesNewRoman,
                 fontSize = 25.sp,
                 color = Color(0xFF1A2C57)
             )
@@ -236,12 +245,12 @@ fun AnswerTwo() {
                 text = "B",
                 textAlign = TextAlign.Center,
                 style = TextStyle(
-                    fontFamily = TimesNewRoman,
                     fontSize = 25.sp,
                     color = Color(0xFF1A2C57)
                 )
             )
         }
+        Spacer(modifier = Modifier.width(16.dp))
         Text(
             text = "${questionsList[questionNumber - 1].wrong1}",
             style = TextStyle(
@@ -277,12 +286,12 @@ fun AnswerThree() {
                 text = "C",
                 textAlign = TextAlign.Center,
                 style = TextStyle(
-                    fontFamily = TimesNewRoman,
                     fontSize = 25.sp,
                     color = Color(0xFF1A2C57)
                 )
             )
         }
+        Spacer(modifier = Modifier.width(16.dp))
         Text(
             text = "${questionsList[questionNumber - 1].wrong2}",
             style = TextStyle(
@@ -318,12 +327,12 @@ fun AnswerFour() {
                 text = "D",
                 textAlign = TextAlign.Center,
                 style = TextStyle(
-                    fontFamily = TimesNewRoman,
                     fontSize = 25.sp,
                     color = Color(0xFF1A2C57)
                 )
             )
         }
+        Spacer(modifier = Modifier.width(16.dp))
         Text(
             text = "${questionsList[questionNumber - 1].wrong3}",
             style = TextStyle(
