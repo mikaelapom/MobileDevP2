@@ -1,4 +1,4 @@
-package com.maxli.coursegpa
+package com.example.myapplication
 
 import org.junit.Test
 
