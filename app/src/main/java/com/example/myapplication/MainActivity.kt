@@ -40,6 +40,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.myapplication.ui.theme.MyApplicationTheme
 import androidx.compose.runtime.*
+import kotlin.collections.listOf
 
 val TimesNewRoman = FontFamily(
     Font(R.font.times, FontWeight.Normal),
@@ -49,12 +50,12 @@ val TimesNewRoman = FontFamily(
 )
 
 var questionNumber by mutableIntStateOf(1)
-var QuestionsAnswered: Int = 0
-var QuestionsCorrect: Int = 0
-var QuestionsWrong: Int = 0 //Might not need -Diana
+var QuestionsAnswered: Double = 0.0
+var QuestionsCorrect: Double = 0.0
+var Score by mutableDoubleStateOf(QuestionsCorrect/QuestionsAnswered)
 
 class Question(val question: String, val correctAnswer: String, val wrong1: String, val wrong2: String, val wrong3: String, var answered: Boolean) {
-
+    val answers = listOf(correctAnswer, wrong1, wrong2, wrong3).shuffled()
 }
 
 val TestQuestion1 = Question("Test Question",
@@ -87,18 +88,19 @@ class MainActivity : ComponentActivity() {
                     ) {
                         TopBanner()
                         SecondBanner()
-
+                        Score()
+                        Spacer(modifier = Modifier.height(10.dp))
                         QuestionBox()
-                        Spacer(modifier = Modifier.height(4.dp))
+                        Spacer(modifier = Modifier.height(10.dp))
                         AnswerOne()
-                        Spacer(modifier = Modifier.height(4.dp))
+                        Spacer(modifier = Modifier.height(10.dp))
                         AnswerTwo()
-                        Spacer(modifier = Modifier.height(4.dp))
+                        Spacer(modifier = Modifier.height(10.dp))
                         AnswerThree()
-                        Spacer(modifier = Modifier.height(4.dp))
+                        Spacer(modifier = Modifier.height(10.dp))
                         AnswerFour()
-                        Spacer(modifier = Modifier.height(200.dp))
-                        backForwardReset()
+                        Spacer(modifier = Modifier.height(180.dp))
+                        BackForwardReset()
                     }
 
                 }
@@ -194,7 +196,8 @@ fun AnswerOne() {
     ) {
         Button(
             onClick = {
-                questionNumber++
+                Score = QuestionsCorrect/QuestionsAnswered
+
             },
             colors = ButtonDefaults.buttonColors(
                 containerColor = Color(0xFF97CDEC),
@@ -214,7 +217,7 @@ fun AnswerOne() {
         }
         Spacer(modifier = Modifier.width(16.dp))
         Text(
-            text = "${questionsList[questionNumber - 1].correctAnswer}",
+            text = questionsList[questionNumber - 1].answers[0],
             fontFamily = TimesNewRoman,
             style = TextStyle(
                 fontSize = 25.sp,
@@ -235,7 +238,7 @@ fun AnswerTwo() {
     ) {
         Button(
             onClick = {
-                questionNumber++
+                Score = QuestionsCorrect/QuestionsAnswered
             },
             colors = ButtonDefaults.buttonColors(
                 containerColor = Color(0xFF97CDEC),
@@ -255,7 +258,7 @@ fun AnswerTwo() {
         }
         Spacer(modifier = Modifier.width(16.dp))
         Text(
-            text = "${questionsList[questionNumber - 1].wrong1}",
+            text = questionsList[questionNumber - 1].answers[1],
             style = TextStyle(
                 fontFamily = TimesNewRoman,
                 fontSize = 25.sp,
@@ -276,7 +279,7 @@ fun AnswerThree() {
     ) {
         Button(
             onClick = {
-                questionNumber++
+                Score = QuestionsCorrect/QuestionsAnswered
             },
             colors = ButtonDefaults.buttonColors(
                 containerColor = Color(0xFF97CDEC),
@@ -296,7 +299,7 @@ fun AnswerThree() {
         }
         Spacer(modifier = Modifier.width(16.dp))
         Text(
-            text = "${questionsList[questionNumber - 1].wrong2}",
+            text = questionsList[questionNumber - 1].answers[2],
             style = TextStyle(
                 fontFamily = TimesNewRoman,
                 fontSize = 25.sp,
@@ -317,7 +320,8 @@ fun AnswerFour() {
     ) {
         Button(
             onClick = {
-                questionNumber++
+                QuestionsAnswered++
+                Score = QuestionsCorrect/QuestionsAnswered
             },
             colors = ButtonDefaults.buttonColors(
                 containerColor = Color(0xFF97CDEC),
@@ -337,7 +341,7 @@ fun AnswerFour() {
         }
         Spacer(modifier = Modifier.width(16.dp))
         Text(
-            text = "${questionsList[questionNumber - 1].wrong3}",
+            text = questionsList[questionNumber - 1].answers[3],
             style = TextStyle(
                 fontFamily = TimesNewRoman,
                 fontSize = 25.sp,
@@ -347,7 +351,7 @@ fun AnswerFour() {
     }
 }
 @Composable
-fun backForwardReset() {
+fun BackForwardReset() {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -358,7 +362,7 @@ fun backForwardReset() {
     ) {
         Button(
             onClick = {
-                questionNumber++
+                questionNumber--
             },
             colors = ButtonDefaults.buttonColors(
                 containerColor = Color(0xFF97CDEC),
@@ -376,10 +380,13 @@ fun backForwardReset() {
                 )
             )
         }
+
+
         Spacer(modifier = Modifier.width(16.dp))
         Button(
             onClick = {
-                questionNumber++
+                questionNumber = 1
+                //Reset everything
             },
             colors = ButtonDefaults.buttonColors(
                 containerColor = Color(0xFF97CDEC),
@@ -397,6 +404,8 @@ fun backForwardReset() {
                 )
             )
     }
+
+
         Spacer(modifier = Modifier.width(16.dp))
         Button(
             onClick = {
@@ -419,3 +428,18 @@ fun backForwardReset() {
             )
         }
 }}
+
+@Composable
+fun Score() {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(30.dp)
+            .padding(horizontal = 8.dp),
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        Text(
+            text = "Grade: $Score"
+        )
+    }
+}
