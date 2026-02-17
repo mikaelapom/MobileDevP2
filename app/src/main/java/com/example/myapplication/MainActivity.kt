@@ -6,6 +6,7 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -96,6 +97,8 @@ class MainActivity : ComponentActivity() {
                         AnswerThree()
                         Spacer(modifier = Modifier.height(4.dp))
                         AnswerFour()
+                        Spacer(modifier = Modifier.height(200.dp))
+                        backForwardReset()
                     }
 
                 }
@@ -343,3 +346,76 @@ fun AnswerFour() {
         )
     }
 }
+@Composable
+fun backForwardReset() {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(100.dp)
+            .padding(horizontal = 8.dp),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.Center
+    ) {
+        Button(
+            onClick = {
+                questionNumber++
+            },
+            colors = ButtonDefaults.buttonColors(
+                containerColor = Color(0xFF97CDEC),
+                contentColor = Color(0xFF1A2C57)
+            ),
+            shape = CircleShape,
+            modifier = Modifier.size(100.dp)
+        ) {
+            Text(
+                text = "Back",
+                textAlign = TextAlign.Center,
+                style = TextStyle(
+                    fontSize = 20.sp,
+                    color = Color(0xFF1A2C57)
+                )
+            )
+        }
+        Spacer(modifier = Modifier.width(16.dp))
+        Button(
+            onClick = {
+                questionNumber++
+            },
+            colors = ButtonDefaults.buttonColors(
+                containerColor = Color(0xFF97CDEC),
+                contentColor = Color(0xFF1A2C57)
+            ),
+            shape = CircleShape,
+            modifier = Modifier.size(100.dp)
+        ) {
+            Text(
+                text = "Reset",
+                textAlign = TextAlign.Center,
+                style = TextStyle(
+                    fontSize = 20.sp,
+                    color = Color(0xFF1A2C57)
+                )
+            )
+    }
+        Spacer(modifier = Modifier.width(16.dp))
+        Button(
+            onClick = {
+                questionNumber++
+            },
+            colors = ButtonDefaults.buttonColors(
+                containerColor = Color(0xFF97CDEC),
+                contentColor = Color(0xFF1A2C57)
+            ),
+            shape = CircleShape,
+            modifier = Modifier.size(100.dp)
+        ) {
+            Text(
+                text = "Next",
+                textAlign = TextAlign.Center,
+                style = TextStyle(
+                    fontSize = 20.sp,
+                    color = Color(0xFF1A2C57)
+                )
+            )
+        }
+}}
